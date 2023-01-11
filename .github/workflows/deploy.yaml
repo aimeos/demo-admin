@@ -1,0 +1,14 @@
+name: Cluster deployment
+on: push
+jobs:
+  deploy:
+    name: Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set the Kubernetes context
+        uses: azure/k8s-set-context@v2
+        with:
+          method: kubeconfig
+          kubeconfig: ${{ secrets.KUBERNETES_CONFIG }}
+      - name: Deploy to the Kubernetes cluster
+        run: kubectl rollout restart deployment admin-demo -n demo
